@@ -58,5 +58,5 @@ def verify_logs():
             sys.exit(1)
 
     print("Check3 succeeded: All logs are valid")
-    print("Data quality check paased")
+    print("\nDATA QUALITY CHECK PASSED")
 
