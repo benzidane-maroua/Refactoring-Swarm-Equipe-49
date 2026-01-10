@@ -2,16 +2,18 @@ import argparse
 import sys
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 from src.utils.logger import log_experiment, ActionType
 from verify_logs import verify_logs
+from src.graph.workflow import build_workflow
 
 load_dotenv()
 
 def main():
+    # parsing the directory argument from command line
     parser = argparse.ArgumentParser()
     parser.add_argument("--target_dir", type=str, required=True)
     args = parser.parse_args()
-
     if not os.path.exists(args.target_dir):
         print(f"❌ Dossier {args.target_dir} introuvable.")
         sys.exit(1)
@@ -30,9 +32,26 @@ def main():
         status="SUCCESS"
     )
 
-    # Orchastrator logic
+    target_dir = Path(args.target_dir).resolve()
 
-    print("✅ MISSION_COMPLETE")
+    # ensure that we're working in sandbox
+
+    # initialize the state
+    state = { 
+        "target_dir": target_dir,
+        "iteration": 0,
+        "audit_report": None,
+        "fixes_applied": False,
+        "test_results": None,
+        "judge_verdict": None,
+    }
+
+    # build and run the workflow
+    workflow = build_workflow()
+    final_state = workflow.invoke(state)
+
+    print("\n FINAL RESULT")
+    print("Judge verdict:", final_state.get("judge_verdict"))
 
     # Run verification at the end to check for data validity
     print("\nDATA OFFICER CHECK:")
