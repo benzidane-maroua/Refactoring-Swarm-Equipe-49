@@ -20,17 +20,17 @@ def main():
 
     print(f"🚀 DEMARRAGE SUR : {args.target_dir}")
 
-    log_experiment(
-        agent_name="System",
-        model_used="STARTUP", 
-        action=ActionType.ANALYSIS, 
-        details={
-            "target_directory": args.target_dir,
-            "input_prompt": "System Start", 
-            "output_response": "Checking directory existence"
-        },
-        status="SUCCESS"
-    )
+    # log_experiment(
+    #     agent_name="System",
+    #     model_used="STARTUP", 
+    #     action=ActionType.ANALYSIS, 
+    #     details={
+    #         "target_directory": args.target_dir,
+    #         "input_prompt": "System Start", 
+    #         "output_response": "Checking directory existence"
+    #     },
+    #     status="SUCCESS"
+    # )
 
     target_dir = Path(args.target_dir).resolve()
 
@@ -48,7 +48,7 @@ def main():
 
     # build and run the workflow
     workflow = build_workflow()
-    final_state = workflow.invoke(state)
+    final_state = workflow.invoke(state, config={"recursion_limit": 50})
 
     print("\n FINAL RESULT")
     print("Judge verdict:", final_state.get("judge_verdict"))
