@@ -4,7 +4,7 @@ import google.generativeai as genai
 
 def call_llm(prompt: str, model: str = "gemini-2.5-flash") -> str:
     """
-    Generic LLM call utility (Toolsmith role).
+   
     Sends a prompt to Gemini and returns raw text.
     """
 
