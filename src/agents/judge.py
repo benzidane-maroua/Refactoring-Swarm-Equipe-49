@@ -43,7 +43,7 @@ def judge_agent(state: dict) -> dict:
                     "file":str(file_path.name),
                     "input_prompt":f"Run {file_path.name}",
                     "output_response":"Process timed out (infinite loop detection)",
-                    "status":"TIMEOUT"
+                    "issues_found": 1 
                 },
                 status="FAILURE"
             )
@@ -64,7 +64,8 @@ def judge_agent(state: dict) -> dict:
                     "file": str(file_path.name),
                     "input_prompt": f"Run {file_path.name}",
                     "output_response": result.stderr, 
-                    "exit_code": result.returncode
+                    "exit_code": result.returncode,
+                    "issues_found": 1 
                 },
                 status="FAILURE"
             )
