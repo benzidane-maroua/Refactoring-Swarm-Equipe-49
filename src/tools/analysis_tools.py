@@ -1,11 +1,8 @@
 import subprocess
 from pathlib import Path
-from .sandbox import BASE_SANDBOX, ensure_safe_path
+from .sandbox_tools import BASE_SANDBOX, ensure_safe_path
 
-# src/tools/pylint_runner.py
-import subprocess
-from pathlib import Path
-from .sandbox import ensure_safe_path
+
 
 def run_pylint(file_path: Path) -> dict:
     """
