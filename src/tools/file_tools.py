@@ -1,5 +1,5 @@
 from pathlib import Path
-from .sandbox import ensure_safe_path
+from .sandbox_tools import ensure_safe_path
 
 def read_file(path: Path) -> str:
     """
