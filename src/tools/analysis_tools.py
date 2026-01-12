@@ -13,8 +13,7 @@ def run_pylint(file_path: Path) -> dict:
     
     Args:
         file_path: Path to the Python file. Must start inside sandbox.
-                   Can be the teacher folder or sandbox/input/output.
-                   
+                Can be the teacher folder or sandbox/input/output.   
     Returns:
         dict with:
             - returncode: 0 if pylint passed, non-zero otherwise
@@ -30,15 +29,14 @@ def run_pylint(file_path: Path) -> dict:
         capture_output=True,
         text=True
     )
+    """example :result = run_pylint(Path("sandbox/student_code/main.py"))
+
+    if result["returncode"] != 0:
+    print("Lint failed")
+    print(result["stdout"])"""
 
     return {
         "returncode": result.returncode,
         "stdout": result.stdout,
         "stderr": result.stderr
     }
-
-    """example :result = run_pylint(Path("sandbox/student_code/main.py"))
-
-if result["returncode"] != 0:
-    print("Lint failed")
-    print(result["stdout"])
