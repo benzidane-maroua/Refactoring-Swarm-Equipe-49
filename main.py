@@ -48,7 +48,7 @@ def main():
 
     # build and run the workflow
     workflow = build_workflow()
-    final_state = workflow.invoke(state, config={"recursion_limit": 50})
+    final_state = workflow.invoke(state)
 
     print("\n FINAL RESULT")
     print("Judge verdict:", final_state.get("judge_verdict"))
