@@ -6,6 +6,7 @@ from pathlib import Path
 from src.utils.logger import log_experiment, ActionType
 from verify_logs import verify_logs
 from src.graph.workflow import build_workflow
+from src.tools.sandbox_tools import ensure_safe_path
 
 load_dotenv()
 
@@ -32,9 +33,10 @@ def main():
         status="SUCCESS"
     )
 
-    target_dir = Path(args.target_dir).resolve()
+    target_dir = Path(args.target_dir)
 
     # ensure that we're working in sandbox
+    ensure_safe_path(target_dir)
 
     # initialize the state
     state = { 
@@ -52,6 +54,7 @@ def main():
 
     print("\n FINAL RESULT")
     print("Judge verdict:", final_state.get("judge_verdict"))
+    print(state)
 
     # Run verification at the end to check for data validity
     print("\nDATA OFFICER CHECK:")
