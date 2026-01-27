@@ -30,6 +30,11 @@ def run_pylint(file_path: Path) -> dict:
         capture_output=True,
         text=True
     )
+    """example :result = run_pylint(Path("sandbox/student_code/main.py"))
+
+    if result["returncode"] != 0:
+    print("Lint failed")
+    print(result["stdout"])"""
 
     return {
         "returncode": result.returncode,

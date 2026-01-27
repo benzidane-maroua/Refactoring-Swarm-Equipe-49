@@ -24,6 +24,7 @@ def write_file(path: Path, content: str) -> None:
     # safe_path.parent.mkdir(parents=True, exist_ok=True) if u pass a path but the parents dont exist, 
     # it creates them 
     # """
+
     with open(safe_path, "w", encoding="utf-8") as f:
         f.write(content)
 

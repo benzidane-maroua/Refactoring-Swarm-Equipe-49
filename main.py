@@ -21,17 +21,17 @@ def main():
 
     print(f"🚀 DEMARRAGE SUR : {args.target_dir}")
 
-    log_experiment(
-        agent_name="System",
-        model_used="STARTUP", 
-        action=ActionType.ANALYSIS, 
-        details={
-            "target_directory": args.target_dir,
-            "input_prompt": "System Start", 
-            "output_response": "Checking directory existence"
-        },
-        status="SUCCESS"
-    )
+    # log_experiment(
+    #     agent_name="System",
+    #     model_used="STARTUP", 
+    #     action=ActionType.ANALYSIS, 
+    #     details={
+    #         "target_directory": args.target_dir,
+    #         "input_prompt": "System Start", 
+    #         "output_response": "Checking directory existence"
+    #     },
+    #     status="SUCCESS"
+    # )
 
     target_dir = Path(args.target_dir)
 
