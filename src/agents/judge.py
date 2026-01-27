@@ -3,6 +3,14 @@ import sys
 from src.utils.logger import log_experiment,ActionType
 from pathlib import Path
 
+# Removes the user's file path from the output response in logs.
+def sanitize_output(text: str, root_path: Path) -> str:
+
+    clean_text = text.replace(str(root_path), ".")
+    # Windows sometimes uses double backslashes, so we clean that too just in case
+    clean_text = clean_text.replace(str(root_path).replace("\\", "\\\\"), ".")
+    return clean_text
+
 def judge_agent(state: dict) -> dict:
     target_dir=state["target_dir"]
     print(f"\nStarting Execution of the Judge...")
@@ -52,8 +60,12 @@ def judge_agent(state: dict) -> dict:
         # analyze the returned code
         if result.returncode != 0:
             print("Judge: Code execution failed")
-            error_msg = f"File: {file_path.name}\nError: {result.stderr}"
+            raw_error = result.stderr  
+            clean_error = sanitize_output(raw_error, path)
+
+            error_msg = f"File: {file_path.name}\nError:\n{clean_error}"
             errors_found.append(error_msg)
+
 
             # log the problem
             log_experiment(
@@ -63,7 +75,7 @@ def judge_agent(state: dict) -> dict:
                 details={
                     "file": str(file_path.name),
                     "input_prompt": f"Run {file_path.name}",
-                    "output_response": result.stderr, 
+                    "output_response": clean_error, 
                     "exit_code": result.returncode,
                     "issues_found": 1 
                 },
@@ -97,7 +109,7 @@ def judge_agent(state: dict) -> dict:
         print(f"Judge: The code is correct")
 
     # increment the iteration so that it can stop if 10 reached
-    # state["iteration"] = state["iteration"] + 1
-    # print(f"Iteration number: {state['iteration']}/10")
+    state["iteration"] = state["iteration"] + 1
+    print(f"Iteration number: {state['iteration']}/10")
 
     return state
