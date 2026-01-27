@@ -35,6 +35,7 @@ Produce a refactoring plan.
 
     # call the LLM
     audit_report = call_llm(prompt)
+    print(audit_report)
 
     # save results in state
     state["audit_report"] = audit_report

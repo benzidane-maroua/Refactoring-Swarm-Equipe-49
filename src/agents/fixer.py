@@ -36,5 +36,6 @@ def fixer_agent(state: dict) -> dict:
         if fixed_code.strip():
             write_file(file_path, fixed_code)
             fixed_files.append(file_path.name)
+    print(fixed_files)
     state["fixed_files"] = fixed_files
     return state
