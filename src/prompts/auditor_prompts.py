@@ -5,8 +5,8 @@ You are Auditor_Agent.
 Task: Analyze Python files for bugs, missing documentation, and code style issues.
 Output format MUST be JSON:
 {
-  "file": "filename.py",
-  "issues_found": 0,
+  "file": "name of the file.py",
+  "issues_found": number of found issues,
   "refactoring_plan": [
     {"line": 10, "issue": "missing docstring", "suggestion": "add docstring"}
   ]

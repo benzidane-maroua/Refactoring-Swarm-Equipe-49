@@ -2,8 +2,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from typing import Dict
 import json
-from src.tools.file_tools import read_file
-from src.tools.file_tools import list_python_files
+from src.tools.file_tools import read_file, list_python_files, extract_json
 from src.tools.llm_call import call_llm
 from src.tools.analysis_tools import run_pylint
 from src.prompts.auditor_prompts import AUDITOR_V1
@@ -11,24 +10,19 @@ from src.utils.logger import log_experiment,ActionType
 
 load_dotenv()
 
-def count_issues(audit_output: str) -> int:
-    try:
-        data = json.loads(audit_output)
-        return len(data.get("issues", []))
-    except json.JSONDecodeError:
-        return 0
-
 def auditor_agent(state: dict) -> dict:
 
     target_dir = state["target_dir"]
     files = list_python_files(target_dir)
 
-    # run the static analysis 
-    pylint_report = run_pylint(target_dir) 
     all_reports = []
 
     for file_path in files:
         content = read_file(file_path)
+        print(file_path.name)
+
+        # run the static analysis 
+        pylint_report = run_pylint(file_path) 
 
         # build the prompt to pass it to the LLM
         prompt = f"""
@@ -41,6 +35,8 @@ def auditor_agent(state: dict) -> dict:
         """
         try:
             audit = call_llm(prompt)
+            print("The prompt:\n",prompt, "\nThe audit:\n",audit)
+            audit_json = extract_json(audit)
 
             log_experiment(
                 agent_name="Auditor",
@@ -50,12 +46,12 @@ def auditor_agent(state: dict) -> dict:
                     "file": file_path.name,
                     "input_prompt": prompt,
                     "output_response": audit,
-                    "issues_found": count_issues(audit)
+                    "issues_found": audit_json["issues_found"]
                 },
                 status="SUCCESS"
             )
 
-            all_reports.append(audit)
+            all_reports.append(audit_json)
         except TimeoutError:
             log_experiment(
                 agent_name="Auditor",
