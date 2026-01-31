@@ -1,3 +1,4 @@
+FIXER_V1 = """ 
 # ROLE: SENIOR PYTHON CODE FIXER / REFACTORER
 
 ## MISSION
@@ -36,13 +37,7 @@ Use this exact structure:
 
 ```json
 {
-  "action": "fix_application",
-  "file_modified": "relative/path/in/sandbox/file.py",
-  "issues_fixed": [1, 3, 7],          // indices from plan's issues list
-  "issues_skipped": [2, 5],           // indices skipped + reason below
-  "error_messages": [
-    "Could not apply issue 2: would break public API"
-  ],
-  "change_summary": "Short bullet list of what was changed (1-2 lines per major fix)",
-  "next_action": "continue" | "retry_file" | "escalate_to_auditor" | "ready_for_test"
+  "file": "filename.py",
+  "fixed_code": "..."  # include the full corrected code as a string
 }
+"""

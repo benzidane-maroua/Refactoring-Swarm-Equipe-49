@@ -1,3 +1,4 @@
+CHANGELOG = """
 # Prompts Changelog – Refactoring Swarm
 
 ## Version history
@@ -16,3 +17,4 @@
 ### v1.2 – upcoming
 - Plan: add few-shot example in Auditor prompt
 - Reason: reduce hallucinations on complex code smells
+"""
