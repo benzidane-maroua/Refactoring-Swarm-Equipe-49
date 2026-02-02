@@ -32,7 +32,7 @@ def fixer_agent(state: dict) -> dict:
 
         try:
             fixed_code = call_llm(prompt)
-            print(fixed_code)
+            print("\n\n",fixed_code,"\n\n")
             fixed_code_json = extract_json(fixed_code)
             log_experiment(
                 agent_name="Fixer",

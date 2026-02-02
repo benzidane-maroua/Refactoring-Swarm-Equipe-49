@@ -35,7 +35,7 @@ def auditor_agent(state: dict) -> dict:
         """
         try:
             audit = call_llm(prompt)
-            print("The prompt:\n",prompt, "\nThe audit:\n",audit)
+            print("\n\n",audit,"\n\n")
             audit_json = extract_json(audit)
 
             log_experiment(
