@@ -180,19 +180,5 @@
             "issues_found": 4
         },
         "status": "SUCCESS"
-    },
-    {
-        "id": "c273b413-0e52-4ad0-bf8e-19967a704c70",
-        "timestamp": "2026-02-18T21:16:59.849272",
-        "agent": "Auditor",
-        "model": "Ollama/deepseek-coder",
-        "action": "CODE_ANALYSIS",
-        "details": {
-            "file": "calculator.py",
-            "input_prompt": "\n             # ROLE: EXPERT PYTHON CODE AUDITOR\n\n## MISSION\nYou are an agent specialized in static analysis of Python code. Your job is to examine \"poorly written\" code and produce a detailed, actionable refactoring plan.\n\n## REQUIRED SKILLS\n- Syntax and semantic analysis\n- Bug detection\n- Identification of performance issues\n- Detection of common security vulnerabilities\n\n## MANDATORY OUTPUT FORMAT\nYou must ONLY return valid JSON with this structure (don't add any extra explanations, I only need a response in JSON format):\n\n```json\n{\n  \"file\": \"name of the file.py\",\n  \"issues_found\": number of found issues,\n  \"refactoring_plan\": [\n    {\"line\": 10, \"issue\": \"missing docstring\", \"suggestion\": \"add docstring\"}\n  ]\n} \n\n            CODE:\n\n            def sum(a, b)\n    retur a+b\n\ndef substraction(a, b:\n    return a - b \n\na = 10\nb = 6\n\nprint(f'''\n    a + b = {sum(a,b)}\n    a - b = {substraction(a,b)}\n    '''\n\n            PYLINT REPORT:\n\n            {'returncode': 2, 'stdout': \"************* Module calculator\\nsandbox\\\\test-local-1\\\\calculator.py:1:14: E0001: Parsing failed: 'expected ':' (<unknown>, line 1)' (syntax-error)\\n\", 'stderr': ''}\n\n            Produce a refactoring plan to fix the code.\n\n        ",
-            "output_response": "```json\n{\n   \"file\": \"calculator.py\",\n   \"issues_found\": 3,\n   \"refactoring_plan\": [\n     {\"line\": 1, \"issue\": \"syntax error (expected ':' to start a block)\", \"suggestion\": \"add ':' after the function definition\"},\n     {\"line\": 2, \"issue\": \"missing docstring\", \"suggestion\": \"add a proper docstring explaining what the function does\"},\n     {\"line\": 8, \"issue\": \"print statement not properly formatted\", \"suggestion\": \"fix indentation and wrap the print statements in parentheses\"}\n   ]\n} \n```",
-            "issues_found": 3
-        },
-        "status": "SUCCESS"
     }
 ]
