@@ -1,6 +1,7 @@
 from pathlib import Path
 from src.tools.sandbox_tools import ensure_safe_path
 import json
+import re
 
 def read_file(path: Path) -> str:
     """
@@ -47,9 +48,11 @@ def list_python_files(folder_path: Path) -> list[Path]:
 
 # This function would allow us to extract JSON from the model's responses
 def extract_json(text: str) -> dict:
-    try:
-        start = text.index("{")
-        end = text.rindex("}") + 1
-        return json.loads(text[start:end])
-    except Exception:
-        raise ValueError("Failed to extract valid JSON from LLM output")
+       try:
+        # Find first { ... } block in the LLM output
+        match = re.search(r"\{.*\}", text, re.DOTALL)
+        if match:
+            return json.loads(match.group())
+       except json.JSONDecodeError as e:
+        print("JSON decode failed:", e)
+       return {}

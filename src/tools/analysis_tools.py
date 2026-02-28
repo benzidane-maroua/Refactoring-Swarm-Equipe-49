@@ -1,49 +1,32 @@
+# src/tools/analysis_tools.py
 import subprocess
 from pathlib import Path
-from src.tools.sandbox_tools import BASE_SANDBOX, ensure_safe_path
-
-# src/tools/pylint_runner.py
-import subprocess
-from pathlib import Path
-from src.tools.sandbox_tools import ensure_safe_path
+import re
 
 def run_pylint(file_path: Path) -> dict:
-    # """
-    # Runs pylint on a given Python file.
-    
-    # Args:
-    #     file_path: Path to the Python file. Must start inside sandbox.
-    #                Can be the teacher folder or sandbox/input/output.
-                   
-    # Returns:
-    #     dict with:
-    #         - returncode: 0 if pylint passed, non-zero otherwise
-    #         - stdout: pylint standard output
-    #         - stderr: pylint standard error
-    # """
-    # Ensure sandbox safety
-    safe_file = ensure_safe_path(file_path)
-
-    # Run pylint
+    """
+    Runs pylint on a Python file and returns structured messages.
+    """
+    # Run pylint with parseable output
     result = subprocess.run(
-        ["pylint", str(safe_file), "--score=n"],
+        ["pylint", str(file_path), "--output-format=text", "--score=n"],
         capture_output=True,
         text=True
     )
-    """example :result = run_pylint(Path("sandbox/student_code/main.py"))
 
-    if result["returncode"] != 0:
-    print("Lint failed")
-    print(result["stdout"])"""
+    # Extract lines that look like messages
+    # Example pylint line: example.py:3:0: C0114: Missing module docstring (missing-module-docstring)
+    message_pattern = re.compile(r"^(.*?):(\d+):\d+: (\w\d+): (.*) \((.*)\)$")
+    messages = []
+    for line in result.stdout.splitlines():
+        match = message_pattern.match(line.strip())
+        if match:
+            filename, line_no, code, msg, symbol = match.groups()
+            messages.append(f"{code} (line {line_no}): {msg}")
 
     return {
         "returncode": result.returncode,
+        "messages": messages,
         "stdout": result.stdout,
         "stderr": result.stderr
     }
-
-#     """example :result = run_pylint(Path("sandbox/student_code/main.py"))
-
-# if result["returncode"] != 0:
-#     print("Lint failed")
-#     print(result["stdout"])
